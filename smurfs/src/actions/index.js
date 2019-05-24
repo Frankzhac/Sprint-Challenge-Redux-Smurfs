@@ -3,9 +3,7 @@ import axios from 'axios';
   Action Types Go Here!
   Be sure to export each action type so you can pull it into your reducer
 */
-export const FETCH_SMURF = 'FETCH_SMURF';
 export const ERROR = 'ERROR';
-export const FETCHING_SMURF = 'FETCHING_SMURF';
 export const ADD_SMURF = 'ADD_SMURF';
 export const ADDING_SMURF = 'ADDING_SMURF';
 export const GET_SMURF = 'GET_SMURF';
@@ -26,28 +24,6 @@ export const DELETING_SMURF = 'UPDATING_SMURF';
 */
 
 const URL = 'http://localhost:3333/smurfs';
-
-export const fetchSmurf = id => {
-  dispatch({ type: FETCHING_SMURF});
-  return axios
-    .post(`${URl}/fetch`)
-    .then(res => {
-      console.log(res.data);
-      dispatch({
-        type: FETCH_SMURF,
-        payload: res.data
-      });
-      dispatch({
-        type: FETCH_SMURF,
-        payload: data
-      });
-    });
-    .catch(err => {
-      console.log(err);
-      dispatch({ type: ERROR, payload: err });
-    });
- };
-};
 
 export const addSmurf = smurf => {
   const newSmurf = axios.get(`${URL}/add`, smurf);
