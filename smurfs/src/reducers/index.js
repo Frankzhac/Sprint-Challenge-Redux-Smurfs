@@ -1,4 +1,11 @@
-import * as actionTypes from '../actions';
+import {
+  GET_SMURF,
+  GET_SMURF_SUCCESS ,
+  GET_SMURF_FAILURE,
+  ADD_SMURF,
+  ADD_SMURF_SUCCESS,
+  ADD_SMURF_FAILURE
+} from '../actions'
 /*
   Be sure to import in all of the action types from `../actions`
 */
@@ -29,50 +36,54 @@ const initialState = {
   There is no need for 'combineReducers' in this project.
   Components can then read your store as, `state` and not `state.fooReducer`.
 */
-export const reducer = (stat = initialState, action) => {
-  switch (action.type) {
-    case actionTypes.GETTING_SMURF:
+export default function smurfsReducer(state=initialState, action) {
+  switch(action.type) {
+
+    // GET requests
+
+    case GET_SMURF:
       return {
         ...state,
-         gettingFriends: true };
-    case actionTypes.GET_SMURF:
+        fetchingSmurfs: true
+      }
+
+    case GET_SMURF_SUCCESS:
       return {
         ...state,
-         friends: action.payload,
-         gettingFriends: false
-         };
-    case actionTypes.UPDATING_SMURF:
+        fetchingSmurfs: false,
+        smurfs: state.smurfs.concat(action.payload)
+      }
+
+    case GET_SMURF_FAILURE:
       return {
         ...state,
-         updatingFriend: true
-        };
-    case actionTypes.UPDATE_SMURF:
+        fetchingSmurfs: false,
+        error: action.payload
+      }
+
+      // POST requests
+
+    case ADD_SMURF:
       return {
         ...state,
-         friends: action.payload,
-         updatingFriend: false
-         };
-    case actionTypes.DELETING_SMURF:
+        addingSmurf: true,
+      }
+
+    case ADD_SMURF_SUCCESS:
       return {
         ...state,
-         deletingFriend: true
-        };
-    case actionTypes.DELETE_SMURF:
+        addingSmurf: false,
+        smurfs: state.smurfs.concat(action.payload)
+      }
+
+    case ADD_SMURF_FAILURE:
       return {
         ...state,
-         friends: action.payload,
-         deletingFriend: false
-         };
-    case actionTypes.ERROR:
-      return {
-         ...state,
-         gettingFriends: false,
-         creatingFriend: false,
-         deletingFriend: false,
-         updatingFriend: false,
-         error: action.payload
-    };     
-  default:
-    return state;
+        addingSmurf: false,
+        error: action.payload
+      }
+
+    default:
+      return state
   }
-};
+}

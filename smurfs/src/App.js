@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios';
+import SmurfForm from './components/SmurfForm';
+import Smurfs from './components/Smurfs';
 /*
  to wire this component up you're going to need a few things.
  I'll let you do this part on your own.
@@ -50,8 +53,8 @@ class App extends Component {
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
         <div>Welcome to your Redux version of Smurfs!</div>
-        <SmurfForm {...props} onSubmit={this.addSmurf} />
-        <Smurfs {...props} smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf} />
+        <SmurfForm onSubmit={this.addSmurf} />
+        <Smurfs smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf} />
       </div>
     );
   }
