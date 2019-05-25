@@ -1,17 +1,13 @@
-import axios from 'axios';
 /*
   Action Types Go Here!
   Be sure to export each action type so you can pull it into your reducer
 */
-export const ERROR = 'ERROR';
-export const ADD_SMURF = 'ADD_SMURF';
-export const ADDING_SMURF = 'ADDING_SMURF';
-export const GET_SMURF = 'GET_SMURF';
-export const GETTING_SMURF = 'GETTING_SMURF';
-export const UPDATE_SMURF = 'UPDATE_SMURF';
-export const DELETE_SMURF = 'UPDATE_SMURF';
-export const UPDATING_SMURF = 'UPDATING_SMURF';
-export const DELETING_SMURF = 'UPDATING_SMURF';
+export const GET_SMURF = "GET_SMURF"
+export const GET_SMURF_SUCCESS = "GET_SMURF_SUCCESS"
+export const GET_SMURF_FAILURE = "GET_SMURF_FAILURE"
+export const ADD_SMURF = "ADD_SMURF"
+export const ADD_SMURF_SUCCESS = "ADD_SMURF_SUCCESS"
+export const ADD_SMURF_FAILURE = "ADD_SMURF_FAILURE"
 /*
   For this project you'll need at least 2 action creators for the main portion,
    and 2 more for the stretch problem.
@@ -23,57 +19,43 @@ export const DELETING_SMURF = 'UPDATING_SMURF';
    D - deleteSmurf
 */
 
-const URL = 'http://localhost:3333/smurfs';
-
-export const addSmurf = smurf => {
-  const newSmurf = axios.get(`${URL}/add`, smurf);
-  return dispatch => {
-    dispatch({ type: ADDING_SMURF });
-    newSmurf
-      .then(res => {
-        dispatch({
-          type: ADD_SMURF,
-          payload: res.data
-        });
-      .catch(err => {
-          dispatch({
-            type: ERROR,
-            payload: err
-          });
-        });
+export const getSmurf = () => dispatch => {
+  dispatch({ type: GET_SMURF })
+  fetch("http://localhost:3333/smurfs")
+    .then(res => res.json())
+    .then(smurfs => {
+      dispatch({
+        type: GET_SMURF_SUCCESS,
+        payload: smurfs
       });
-  };
+    })
+    .catch(err => {
+      dispatch({
+        type: ADD_SMURF_FAILURE,
+        payload: err
+      });
+    });
+} ;
 
-  export const getSmurf = () => {
-    const smurf = axios.get(`${URL}/get`);
-    return dispatch => {
-      dispatch({ type: GETTING_SMURF });
-      smurf
-        .then(res => {
-          type: GET_SMURF,
-          payload: res.data
-        });
-        .catch(err => {
-          dispatch({
-            type: ERROR,
-            payload: err
-          });
-        })
-    }
-  }
 
-  export const deleteSmurf = id => {
-  const deletedFriend = axios.delete(`${URL}/delete`, {
-    data: { id }
+export const addSmurf = smurf => dispatch => {
+  dispatch({type: ADD_SMURF})
+  fetch("http:///localhost:3333/smurfs", {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(smurf),
+  })
+  .then(res => res.json())
+  .then(smurfs => {
+    dispatch({
+      type: ADD_SMURF_SUCCESS,
+      payload: smurfs
+    });
+  })
+  .catch(err => {
+    dispatch({
+      type: ADD_SMURF_FAILURE,
+      payload: err
+    });
   });
-  return dispatch => {
-    dispatch({ type: DELETING_SMURF });
-    deletedFriend
-      .then(({ data }) => {
-        dispatch({ type: DELETE_SMURF, payload: data });
-      })
-      .catch(err => {
-        dispatch({ type: ERROR, payload: err });
-      });
-  };
 };
